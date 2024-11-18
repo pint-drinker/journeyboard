@@ -13,6 +13,10 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as annotations from "../annotations.js";
+import type * as insights from "../insights.js";
+import type * as processMapSteps from "../processMapSteps.js";
+import type * as processMaps from "../processMaps.js";
 import type * as tasks from "../tasks.js";
 
 /**
@@ -24,6 +28,10 @@ import type * as tasks from "../tasks.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  annotations: typeof annotations;
+  insights: typeof insights;
+  processMapSteps: typeof processMapSteps;
+  processMaps: typeof processMaps;
   tasks: typeof tasks;
 }>;
 export declare const api: FilterApi<

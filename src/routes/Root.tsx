@@ -1,11 +1,11 @@
+import React from 'react'
 import { useState } from 'react'
-import './App.css'
 import { useQuery } from "convex/react";
-import { api } from "../convex/_generated/api";
-import { Box, Flex, Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
+import { api } from "../../convex/_generated/api";
+import { Box, Flex, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 
 
-function App() {
+export function Root() {
   const tasks = useQuery(api.tasks.get);
   const [count, setCount] = useState(0)
 
@@ -32,5 +32,3 @@ function App() {
     </Box>
   )
 }
-
-export default App
