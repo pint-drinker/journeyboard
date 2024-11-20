@@ -1,22 +1,14 @@
 import { defineSchema, defineTable } from "convex/server";
+import { authTables } from "@convex-dev/auth/server";
 import { v } from "convex/values";
 
 
 export default defineSchema({
+  ...authTables,
+
   tasks: defineTable({
     text: v.string(),
     isCompleted: v.boolean(),
-  }),
-
-  // User and Authentication
-  users: defineTable({
-    email: v.string(),
-    password: v.string(),
-    name: v.string(),
-    createdAt: v.number(), // Store as timestamp (e.g., Date.now())
-    updatedAt: v.number(), // Store as timestamp
-    roleId: v.optional(v.id("roles")),
-    organizationIds: v.array(v.id("organizations")),
   }),
 
   // Role-Based Permissions
