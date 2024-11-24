@@ -11,7 +11,6 @@ export default defineSchema({
   // Groups and Membership
   userGroups: defineTable({
     name: v.string(),
-    memberIds: v.array(v.id("groupMembers")),  // TODO: drop this when we can
   }),
 
   groupMembers: defineTable({
