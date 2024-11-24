@@ -2,8 +2,6 @@ import OpenAI from "openai";
 import { useMutation } from '@tanstack/react-query';
 import { Doc } from "../convex/_generated/dataModel";
 
-console.log(import.meta.env.VITE_OPENAI_API_KEY);
-
 const openai = new OpenAI({ 
   apiKey: import.meta.env.VITE_OPENAI_API_KEY,
   dangerouslyAllowBrowser: true,

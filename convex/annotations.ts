@@ -4,6 +4,11 @@ import { v } from "convex/values";
 export const listByMap = query({
   args: { mapId: v.id("processMaps") },
   handler: async (ctx, { mapId }) => {
+    const userIdentity = await ctx.auth.getUserIdentity();
+    if (!userIdentity) {
+      throw new Error("Unauthenticated call to mutation");
+    }
+
     return await ctx.db.query("annotations")
       .filter((q) => q.eq(q.field("mapId"), mapId))
       .collect();
@@ -13,6 +18,11 @@ export const listByMap = query({
 export const listByStep = query({
   args: { processMapStepId: v.id("processMapSteps") },
   handler: async (ctx, { processMapStepId }) => {
+    const userIdentity = await ctx.auth.getUserIdentity();
+    if (!userIdentity) {
+      throw new Error("Unauthenticated call to mutation");
+    }
+
     return await ctx.db.query("annotations")
       .filter((q) => q.eq(q.field("processMapStepId"), processMapStepId))
       .collect();
@@ -32,6 +42,11 @@ export const createMany = mutation({
     )
   },
   handler: async (ctx, { annotations }) => {
+    const userIdentity = await ctx.auth.getUserIdentity();
+    if (!userIdentity) {
+      throw new Error("Unauthenticated call to mutation");
+    }
+
     const insertedIds = [];
     for (const annotation of annotations) {
       const id = await ctx.db.insert("annotations", {
@@ -50,6 +65,11 @@ export const createMany = mutation({
 export const deleteByMap = mutation({
   args: { mapId: v.id("processMaps") },
   handler: async (ctx, { mapId }) => {
+    const userIdentity = await ctx.auth.getUserIdentity();
+    if (!userIdentity) {
+      throw new Error("Unauthenticated call to mutation");
+    }
+    
     const annotations = await ctx.db.query("annotations")
       .filter((q) => q.eq(q.field("mapId"), mapId))
       .collect();

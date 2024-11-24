@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Box, Heading, Table, Thead, Tbody, Tr, Th, Td, Button, Link as RouterLink, Skeleton, useDisclosure } from "@chakra-ui/react";
@@ -7,9 +7,8 @@ import { Doc, Id } from "../../convex/_generated/dataModel";
 import { AddEditInsightModal } from "./AddEditInsightModal";
 
 export const InsightsList = () => {
-  const insights = useQuery(api.insights.list, { groupId: "kn79hhv4152st4yna00avqe3n174rr2f" });
-  const processMaps = useQuery(api.processMaps.list, { groupId: "kn79hhv4152st4yna00avqe3n174rr2f" });
-  console.log(insights);
+  const insights = useQuery(api.insights.list);
+  const processMaps = useQuery(api.processMaps.list);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedInsight, setSelectedInsight] = useState<Doc<"insights"> | null>(null);
   if (!insights || !processMaps) {

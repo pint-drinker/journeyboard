@@ -25,10 +25,13 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+
+// TODO: add error handling particularly with authentication on the backend
+//  Send them back to the login page most likely
 const router = createBrowserRouter([
   {
     path: "login",
-    element: <SignIn />
+    element: <SignIn />,
   },
   {
     path: "/",
@@ -40,11 +43,11 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <ProcessMapsList />
+            element: <ProcessMapsList />,
           },
           {
             path: ":id", 
-            element: <ProcessMapDetails />
+            element: <ProcessMapDetails />,
           }
         ]
       },
@@ -54,7 +57,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <InsightsList />
+            element: <InsightsList />,
           }
         ]
       }

@@ -20,7 +20,7 @@ export const AddProcessMapModal = ({ isOpen, onClose }: AddProcessMapModalProps)
 
   const addProcessMap = useMutation(api.processMaps.create);
   const handleClick = () => {
-    addProcessMap({ name, description, groupId: "kn79hhv4152st4yna00avqe3n174rr2f" });
+    addProcessMap({ name, description });
   };
   
   return (

@@ -1,9 +1,10 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
+import { getActiveUserInfoWithAuth } from "./common";
 
 export const list = query({
-  args: { groupId: v.id("userGroups") },
-  handler: async (ctx, { groupId }) => {
+  handler: async (ctx) => {
+    const { groupId } = await getActiveUserInfoWithAuth(ctx);
     return await ctx.db.query("insights").filter((q) => q.eq(q.field("groupId"), groupId)).collect();
   },
 });
@@ -11,6 +12,11 @@ export const list = query({
 export const listByMap = query({
   args: { mapId: v.id("processMaps") },
   handler: async (ctx, { mapId }) => {
+    const userIdentity = await ctx.auth.getUserIdentity();
+    if (!userIdentity) {
+      throw new Error("Unauthenticated call to mutation");
+    }
+
     return await ctx.db.query("insights")
       .filter((q) => q.eq(q.field("mapId"), mapId))
       .collect();
@@ -20,6 +26,11 @@ export const listByMap = query({
 export const get = query({
   args: { insightId: v.id("insights") },
   handler: async (ctx, { insightId }) => {
+    const userIdentity = await ctx.auth.getUserIdentity();
+    if (!userIdentity) {
+      throw new Error("Unauthenticated call to mutation");
+    }
+
     return await ctx.db.get(insightId);
   },
 });
@@ -30,9 +41,10 @@ export const create = mutation({
     ownerName: v.string(),
     title: v.string(),
     content: v.optional(v.string()),
-    groupId: v.id("userGroups")
   },
-  handler: async (ctx, { mapId, ownerName, title, content, groupId }) => {
+  handler: async (ctx, { mapId, ownerName, title, content }) => {
+    const { groupId } = await getActiveUserInfoWithAuth(ctx);
+
     return await ctx.db.insert("insights", {
       mapId,
       ownerName,
@@ -52,6 +64,11 @@ export const edit = mutation({
     content: v.optional(v.string()),
   },
   handler: async (ctx, { insightId, mapId, ownerName, title, content }) => {
+    const userIdentity = await ctx.auth.getUserIdentity();
+    if (!userIdentity) {
+      throw new Error("Unauthenticated call to mutation");
+    }
+
     return await ctx.db.patch(insightId, {
       mapId,
       ownerName, 

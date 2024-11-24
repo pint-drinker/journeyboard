@@ -6,31 +6,30 @@ import { v } from "convex/values";
 export default defineSchema({
   ...authTables,
 
-  tasks: defineTable({
-    text: v.string(),
-    isCompleted: v.boolean(),
-  }),
-
-  // Role-Based Permissions
-  roles: defineTable({
-    name: v.string(),
-    permissionIds: v.array(v.id("permissions")),
-  }),
-
-  permissions: defineTable({
-    name: v.string(),
-  }),
+  // TODO: Role-Based Permissions
 
   // Groups and Membership
   userGroups: defineTable({
     name: v.string(),
-    memberIds: v.array(v.id("groupMembers")),
+    memberIds: v.array(v.id("groupMembers")),  // TODO: drop this when we can
   }),
 
   groupMembers: defineTable({
     userId: v.id("users"),
     groupId: v.id("userGroups"),
-  }),
+    role: v.optional(v.string()),
+    joinedAt: v.number(),
+  }).index("by_group", ["groupId"])
+    .index("by_user", ["userId"]),
+
+  groupInvites: defineTable({
+    email: v.string(),
+    groupId: v.id("userGroups"),
+    role: v.string(),
+    createdAt: v.number(),
+    expiresAt: v.optional(v.number()),
+    invitedBy: v.id("users"),
+  }).index("by_email", ["email"]),
 
   // Mapping Tool
   processMaps: defineTable({
@@ -65,11 +64,9 @@ export default defineSchema({
     positiveSentiment: v.boolean(),
   }),
 
-  // Organizations and External Users
+  // TODO: Organizations and External Users, associated to insights
   organizations: defineTable({
     name: v.string(),
-    userIds: v.array(v.id("users")),
-    externalUserIds: v.array(v.id("externalUsers")),
   }),
 
   externalUsers: defineTable({

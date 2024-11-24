@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; 
+import { useState, useEffect } from "react"; 
 import { Doc } from "../../convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
@@ -31,7 +31,7 @@ export const AddEditInsightModal = ({ isOpen, onClose, existingInsight, mode }: 
     }
   }, [existingInsight]);
 
-  const processMaps = useQuery(api.processMaps.list, { groupId: "kn79hhv4152st4yna00avqe3n174rr2f" });
+  const processMaps = useQuery(api.processMaps.list);
   const createInsight = useMutation(api.insights.create);
   const editInsight = useMutation(api.insights.edit);
 
@@ -43,7 +43,6 @@ export const AddEditInsightModal = ({ isOpen, onClose, existingInsight, mode }: 
         ownerName,
         title,
         content,
-        groupId: "kn79hhv4152st4yna00avqe3n174rr2f"
       });
     } else if (existingInsight) {
       await editInsight({

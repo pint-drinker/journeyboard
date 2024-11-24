@@ -1,4 +1,3 @@
-import React from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Box, Heading, Stack, Skeleton, Button, Link as RouterLink, Text } from "@chakra-ui/react";
@@ -7,7 +6,7 @@ import { useDisclosure } from "@chakra-ui/react";
 import { AddProcessMapModal } from "./AddProcessMapModal";
 
 export const ProcessMapsList = () => {
-  const processMaps = useQuery(api.processMaps.list, { groupId: "kn79hhv4152st4yna00avqe3n174rr2f" });
+  const processMaps = useQuery(api.processMaps.list);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
