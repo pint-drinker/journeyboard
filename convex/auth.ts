@@ -40,17 +40,11 @@ export const { auth, signIn, signOut, store } = convexAuth({
       if (pendingInvites.length > 0) {
         // Add user to the first invited group
         const invite = pendingInvites[0];
-        const groupMemberId = await ctx.db.insert("groupMembers", {
+        await ctx.db.insert("groupMembers", {
           userId: user._id,
           groupId: invite.groupId,
           role: invite.role,
           joinedAt: Date.now(),
-        });
-  
-        // Update the group's memberIds array
-        const group = await ctx.db.get(invite.groupId);
-        await ctx.db.patch(invite.groupId, {
-          memberIds: [...group.memberIds, groupMemberId],
         });
   
         // Clean up the invite
@@ -65,7 +59,6 @@ export const { auth, signIn, signOut, store } = convexAuth({
   
         const groupId = await ctx.db.insert("userGroups", {
           name: randomName,
-          memberIds: [],
         });
   
         await ctx.db.insert("groupMembers", {

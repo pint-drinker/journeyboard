@@ -1,5 +1,6 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
 
+// TODO: get typing squared away
 export const getActiveUserInfoWithAuth = async (ctx: any, shouldThrow = true) => {
   const userId = await getAuthUserId(ctx);
   if (userId === null) {
@@ -8,7 +9,7 @@ export const getActiveUserInfoWithAuth = async (ctx: any, shouldThrow = true) =>
     }
     return { userId: null, groupId: null, memberId: null };
   }
-  const activeGroupMember = await ctx.db.query("groupMembers").filter((q) => q.eq(q.field("userId"), userId)).first();
+  const activeGroupMember = await ctx.db.query("groupMembers").filter((q: any) => q.eq(q.field("userId"), userId)).first();
   if (!activeGroupMember) {
     if (shouldThrow) {
       throw new Error("User is not a member of any active group");
