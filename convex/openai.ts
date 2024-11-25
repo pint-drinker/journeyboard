@@ -27,7 +27,7 @@ export const useGPT4Mutation = () => {
   });
 };
 
-const generateSystemPrompt = (steps: { id: Id<"processMapSteps">, name: string, description: string }[]) => {
+const generateSystemPrompt = (steps: { id: string, name: string, description: string }[]) => {
   return `You are an AI assistant that analyzes customer insights and maps them to process steps. For each insight, you will:
 1. Identify which process step it relates to
 2. Extract the key feedback from the insight
@@ -60,7 +60,7 @@ export const mapInsightsToSteps = action({
   args: { 
     steps: v.array(
       v.object({
-        id: v.id("processMapSteps"),
+        id: v.string(),
         name: v.string(),
         description: v.string(),
       })
