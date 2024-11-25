@@ -1,4 +1,3 @@
-import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import { useConvexAuth } from "convex/react";
 import { useLocation, Navigate, Outlet } from "react-router-dom";
@@ -10,7 +9,7 @@ import { ProcessMapDetails } from "./processMaps/ProcessMapDetails";
 import { InsightsList } from "./insights/InsightsList";
 
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+const ProtectedRoute = () => {
   const { isLoading, isAuthenticated } = useConvexAuth();
   const location = useLocation();
 
@@ -22,7 +21,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  return <>{children}</>;
+  return <Outlet />;
 };
 
 
@@ -38,8 +37,12 @@ const router = createBrowserRouter([
     element: <NavBar />,
     children: [
       {
+        path: "",
+        element: <Navigate to="process-maps" replace />,
+      },
+      {
         path: "process-maps",
-        element: <ProtectedRoute><Outlet /></ProtectedRoute>,
+        element: <ProtectedRoute />,
         children: [
           {
             path: "",
@@ -53,7 +56,7 @@ const router = createBrowserRouter([
       },
       {
         path: "insights",
-        element: <ProtectedRoute><Outlet /></ProtectedRoute>,
+        element: <ProtectedRoute />,
         children: [
           {
             path: "",

@@ -11,6 +11,7 @@ import { useQuery } from "convex/react";
 export const NavBar = () => {
   const group = useQuery(api.auth.currentGroup);
   const user = useQuery(api.auth.currentUser);
+  
   const { signOut } = useAuthActions();
   return (
     <>

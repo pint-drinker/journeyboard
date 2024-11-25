@@ -27,13 +27,9 @@ export const SignIn = () => {
       // TODO: figure out why redirectTo is not working and also do it for signup
       // TODO: figure out how to make sure the adding to group members thing works
       // add a slight delay here
-      if (isSignUp) {
-        setTimeout(() => {
-          navigate("/process-maps");
-        }, 300);
-      } else {
+      setTimeout(() => {
         navigate("/process-maps");
-      }
+      }, 300);
     } catch (error) {
       console.error("Authentication failed:", error);
       setError("Failed to sign in. Please check your credentials and try again.");
