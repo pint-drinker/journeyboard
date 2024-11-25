@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, FormControl, FormLabel, Input, Textarea, Stack, Button } from "@chakra-ui/react";
 import { api } from "../../convex/_generated/api";
 import { useMutation } from "convex/react";
+import { Id } from "../../convex/_generated/dataModel";
 
 type AddProcessMapStepModalProps = {
   isOpen: boolean;

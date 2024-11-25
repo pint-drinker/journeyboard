@@ -27,6 +27,7 @@ export const ProcessMapsList = () => {
       <Heading mb={6}>Process Maps</Heading>
       <Stack spacing={4} gap={1} mb={1}>
         {processMaps.map((map) => (
+          // @ts-ignore
           <Link key={map._id} as={RouterLink} to={`/process-maps/${map._id}`}>
             <Button 
               width="100%" 

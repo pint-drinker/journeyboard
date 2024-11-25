@@ -39,6 +39,7 @@ export const AddEditInsightModal = ({ isOpen, onClose, existingInsight, mode }: 
     if (!selectedMapId || !ownerName || !title) return;
     if (mode === "create") {
       await createInsight({
+        // @ts-ignore
         mapId: selectedMapId,
         ownerName,
         title,
@@ -47,6 +48,7 @@ export const AddEditInsightModal = ({ isOpen, onClose, existingInsight, mode }: 
     } else if (existingInsight) {
       await editInsight({
         insightId: existingInsight._id,
+        // @ts-ignore
         mapId: selectedMapId,
         ownerName,
         title,

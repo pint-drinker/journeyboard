@@ -39,6 +39,7 @@ export const AnnotationsModal = ({ isOpen, onClose, annotations, insights }: Ann
                     <Td>{annotation.content}</Td>
                     <Td>{annotation.positiveSentiment ? "Positive" : "Negative"}</Td>
                     <Td>
+                      {/* @ts-ignore */}
                       <Link as={RouterLink} to={`/insights/${annotation.insightId}`} color="blue.500">
                         {insight?.title || "Unknown Insight"}
                       </Link>

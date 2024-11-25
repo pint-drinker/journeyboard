@@ -45,7 +45,7 @@ The stepId correlates to the _id field on the steps. When returning content, ret
 `;
 };
 
-function stripCodeBlockFormatting(rawString) {
+function stripCodeBlockFormatting(rawString: string) {
   // Check if the string starts with "```json" and ends with "```"
   if (rawString.startsWith("```json") && rawString.endsWith("```")) {
     // Remove the "```json" from the start and "```" from the end

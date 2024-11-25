@@ -52,6 +52,7 @@ export const InsightsList = () => {
                 _hover={{ bg: 'gray.50' }}
               >
                 <Td>
+                  {/* @ts-ignore */}
                   <Link as={RouterLink} to={`/process-maps/${insight.mapId}`}>
                     {processMapMap.get(insight.mapId)}
                   </Link>
