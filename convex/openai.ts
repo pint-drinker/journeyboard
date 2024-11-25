@@ -1,6 +1,5 @@
 import OpenAI from "openai";
 import { useMutation } from '@tanstack/react-query';
-import { Id } from "./_generated/dataModel";
 import { action } from "./_generated/server";
 import { v } from "convex/values";
 
