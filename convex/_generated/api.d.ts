@@ -18,6 +18,7 @@ import type * as auth from "../auth.js";
 import type * as common from "../common.js";
 import type * as http from "../http.js";
 import type * as insights from "../insights.js";
+import type * as openai from "../openai.js";
 import type * as processMapSteps from "../processMapSteps.js";
 import type * as processMaps from "../processMaps.js";
 
@@ -35,6 +36,7 @@ declare const fullApi: ApiFromModules<{
   common: typeof common;
   http: typeof http;
   insights: typeof insights;
+  openai: typeof openai;
   processMapSteps: typeof processMapSteps;
   processMaps: typeof processMaps;
 }>;

@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery, useMutation, useAction } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Box, Heading, Stack, Skeleton, Button, Flex, Text, Card, CardBody, VStack, ButtonGroup } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import { AddProcessMapStepModal } from "./AddProcessMapStepModal";
 import { AnnotationsModal } from "./AnnotationsModal";
 import type { Doc, Id } from "../../convex/_generated/dataModel";
-import { analyzeWithOpenAI } from "../openai";
 
 export const ProcessMapDetails = () => {
   const { id } = useParams();
@@ -19,6 +18,8 @@ export const ProcessMapDetails = () => {
   const insights = useQuery(api.insights.listByMap, { mapId: id });
   // @ts-ignore
   const annotations = useQuery(api.annotations.listByMap, { mapId: id });
+
+  const mapInsightsToSteps = useAction(api.openai.mapInsightsToSteps);
   
   const processMapStepsMap = new Map<Id<"processMapSteps">, Doc<"processMapSteps">>();
   processMapSteps?.forEach((step) => {
@@ -46,7 +47,15 @@ export const ProcessMapDetails = () => {
     const annotationsPayload = [];
     for (const insight of insights) {
       try {
-        const analysisResults = await analyzeWithOpenAI(insight.title, insight.content || "", processMapSteps);
+        const analysisResults = await mapInsightsToSteps({ 
+          insightTitle: insight.title, 
+          insightContent: insight.content || "", 
+          steps: processMapSteps.map((step) => ({ 
+            id: step._id,
+            name: step.name, 
+            description: step.description || "" 
+          }))
+        });
         console.log(`Analysis results for insight ${insight._id}:`, analysisResults);
         for (const result of analysisResults) {
           const step = processMapStepsMap.get(result.stepId);

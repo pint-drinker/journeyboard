@@ -1,10 +1,11 @@
 import OpenAI from "openai";
 import { useMutation } from '@tanstack/react-query';
-import { Doc } from "../convex/_generated/dataModel";
+import { Id } from "./_generated/dataModel";
+import { action } from "./_generated/server";
+import { v } from "convex/values";
 
 const openai = new OpenAI({ 
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true,
+  apiKey: process.env.CONVEX_OPENAI_API_KEY,
 });
 
 // Convert to standalone function for mutation
@@ -26,7 +27,7 @@ export const useGPT4Mutation = () => {
   });
 };
 
-const generateSystemPrompt = (steps: Doc<"processMapSteps">[]) => {
+const generateSystemPrompt = (steps: { id: Id<"processMapSteps">, name: string, description: string }[]) => {
   return `You are an AI assistant that analyzes customer insights and maps them to process steps. For each insight, you will:
 1. Identify which process step it relates to
 2. Extract the key feedback from the insight
@@ -55,29 +56,42 @@ function stripCodeBlockFormatting(rawString: string) {
   return rawString;
 }
 
-export async function analyzeWithOpenAI(insightTitle: string, insightContent: string, steps: Doc<"processMapSteps">[]) {
-  const response = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
-    messages: [
-      {
-        role: "system",
-        content: generateSystemPrompt(steps),
-      },
-      {
-        role: "user", 
-        content: `Analyze this insight and map it to the process steps given above: \n\nInsight title: ${insightTitle}\nInsight content: ${insightContent}`
-      }
-    ],
-    temperature: 0.7
-  })
-  if (!response.choices[0].message.content) {
-    throw new Error(`OpenAI API error: ${response}`);
-  }
-  let out = stripCodeBlockFormatting(response.choices[0].message.content);
-  try {
-    return JSON.parse(out);
-  } catch (e) {
-    console.error(e);
-    return null;
-  }
-}
+export const mapInsightsToSteps = action({
+  args: { 
+    steps: v.array(
+      v.object({
+        id: v.id("processMapSteps"),
+        name: v.string(),
+        description: v.string(),
+      })
+    ), 
+    insightTitle: v.string(), 
+    insightContent: v.string() 
+  },
+  handler: async (_, args) => {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: generateSystemPrompt(args.steps),
+        },
+        {
+          role: "user", 
+          content: `Analyze this insight and map it to the process steps given above: \n\nInsight title: ${args.insightTitle}\nInsight content: ${args.insightContent}`
+        }
+      ],
+      temperature: 0.7
+    })
+    if (!response.choices[0].message.content) {
+      throw new Error(`OpenAI API error: ${response}`);
+    }
+    let out = stripCodeBlockFormatting(response.choices[0].message.content);
+    try {
+      return JSON.parse(out);
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  },
+});
