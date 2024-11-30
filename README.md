@@ -13,6 +13,17 @@ Ensure you have the following installed on your machine:
 - [Node.js](https://nodejs.org/) (version 14 or later)
 - [npm](https://www.npmjs.com/) (comes with Node.js)
 
+Setup your environment variables by copying the `.env.example` file to `.env` and setting the appropriate values. You will need to create a new project in [Convex](https://www.convex.dev/) and set the `VITE_CONVEX_URL` environment variable to the URL of your Convex deployment. 
+
+This project uses OAuth with Github via Convex Auth. If you want to use a different provider, you will need to update the `VITE_AUTH0_DOMAIN` and `VITE_AUTH0_CLIENT_ID` environment variables. For more information, refer to the [Convex Auth documentation](https://docs.convex.dev/auth).
+
+### Technologies
+
+- [React](https://react.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Convex](https://www.convex.dev/)
+- [Vite](https://vitejs.dev/)
+
 ### Installation
 
 1. **Clone the Repository:**
@@ -38,17 +49,23 @@ Ensure you have the following installed on your machine:
    npm run dev
    ```
 
-   This will start the application and you can view it in your browser at `http://localhost:3000`.
+   In another terminal, start the Convex dev server:
+
+   ```bash
+   npx convex dev
+   ```
+
+   This will start the application and you can view it in your browser at `http://localhost:5173`.
+
+### Deploying
+
+This project is deployed to Vercel. To deploy your own copy, fork this repository and create a new project on Vercel. Then, update the `VITE_CONVEX_URL` environment variable with the URL of your Convex deployment. Follow additional instructions in the [Vercel deployment guide](https://vercel.com/docs/deployments/manual-deploys).
 
 ### Features
 
 - **Process Mapping:** Create detailed maps of your processes and user journeys.
 - **Insight Integration:** Add insights directly to your process maps and automatically associate them with relevant steps.
 - **User-Friendly Interface:** Navigate and manage your projects with an intuitive and easy-to-use interface.
-
-### Contributing
-
-We welcome contributions! Please read our [contributing guidelines](CONTRIBUTING.md) to get started.
 
 ### License
 
